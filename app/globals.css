@@ -168,6 +168,54 @@ kbd { display:inline-grid; min-width:19px; height:18px; place-items:center; bord
 .foundation-note { grid-column:1/3; padding:12px 15px; border-left:3px solid var(--cinnabar); background:#fff9f2; color:#60514a; font-size:10px; line-height:1.55; }
 .foundation-note b { color:var(--cinnabar); margin-right:8px; }
 
+.appendix-reading-toggle { width:min(360px,100%); display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:17px; padding:5px; border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.56); }
+.appendix-reading-toggle button { min-height:40px; border:0; border-radius:5px; padding:8px 16px; background:transparent; color:#66706a; font-size:13px; font-weight:800; cursor:pointer; transition:background .16s ease,color .16s ease; }
+.appendix-reading-toggle button.active { background:var(--forest); color:white; box-shadow:0 3px 9px rgba(21,61,48,.16); }
+
+.appendix-board { flex:1 0 auto; min-width:0; display:flex; flex-direction:column; }
+.appendix-header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:clamp(16px,2.7vh,33px) 0 18px; }
+.appendix-header h2 { margin:0; font:600 clamp(38px,4.8vw,70px)/1.1 Georgia,"Noto Serif KR",serif; letter-spacing:-.06em; }
+.appendix-subtitle { margin:8px 0 0; color:#6f7772; font-size:12px; }
+.appendix-count { color:#7b827e; font:13px Georgia,serif; letter-spacing:.1em; padding-top:8px; }
+.appendix-preface { margin:0 0 14px; padding:13px 17px; border-left:3px solid var(--cinnabar); background:#fff9f2; color:#5f5049; font:12px/1.75 Georgia,"Noto Serif KR",serif; }
+.appendix-preface span { display:block; margin-bottom:3px; color:var(--cinnabar); font:800 9px Arial,"Apple SD Gothic Neo",sans-serif; letter-spacing:.12em; }
+.passage-nav { display:flex; overflow-x:auto; border-block:1px solid var(--line); }
+.passage-nav button { flex:1 0 90px; border:0; border-right:1px solid var(--line); padding:10px 8px; background:transparent; color:#727a75; font-size:10px; cursor:pointer; }
+.passage-nav button:last-child { border-right:0; }
+.passage-nav button span { display:block; margin-bottom:4px; color:var(--cinnabar); font:10px Georgia,serif; }
+.passage-nav button.active { background:var(--forest); color:white; }
+.passage-nav button.active span { color:#f3b39e; }
+.reading-sheet { flex:1; min-width:0; min-height:290px; margin-top:14px; padding:clamp(25px,4vw,60px); border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); background:rgba(255,255,255,.28); display:flex; flex-direction:column; justify-content:center; }
+.reading-sheet>header { margin-bottom:clamp(20px,3vh,34px); text-align:center; }
+.reading-sheet>header span { color:var(--cinnabar); font-size:9px; font-weight:800; letter-spacing:.15em; }
+.reading-sheet>header h3 { margin:7px 0 0; font:600 clamp(27px,3.3vw,45px)/1.15 Georgia,"Noto Serif KR",serif; letter-spacing:-.05em; }
+.flow-reading { max-width:1020px; margin:0 auto; font:clamp(19px,2.12vw,31px)/1.95 Georgia,"Noto Serif KR",serif; letter-spacing:-.035em; overflow-wrap:anywhere; }
+.flow-reading-unit { margin-right:.22em; }
+.flow-reading-unit b { color:var(--forest); font-weight:600; white-space:nowrap; }
+.flow-reading-unit:not(:last-child)::after { content:' '; }
+.continuous-reading { flex:none; display:block; overflow-wrap:anywhere; padding-block:clamp(28px,4vw,58px); }
+.continuous-reading-section { width:min(1020px,100%); min-width:0; margin:0 auto; padding:clamp(22px,3.2vw,38px) 0; border-bottom:1px solid var(--line); }
+.continuous-reading-section:first-child { padding-top:0; }
+.continuous-reading-section:last-child { padding-bottom:0; border-bottom:0; }
+.continuous-reading-section header { margin:0 0 11px; text-align:left; }
+.continuous-reading-section header span { color:var(--cinnabar); font-size:9px; font-weight:800; letter-spacing:.12em; }
+.continuous-reading-section header h3 { margin:5px 0 0; font:600 clamp(22px,2.6vw,32px)/1.16 Georgia,"Noto Serif KR",serif; letter-spacing:-.045em; }
+.continuous-reading .flow-reading { max-width:none; font-size:clamp(18px,1.9vw,27px); }
+.passage-translation { margin:10px 0 0; color:#514940; font:15px/1.65 Georgia,"Noto Serif KR",serif; }
+.original-reading { width:min(900px,100%); margin:0 auto; padding:0; list-style:none; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.original-reading li { min-width:0; padding:14px 16px; border:1px solid var(--line); background:rgba(255,255,255,.45); }
+.original-reading strong { display:block; color:var(--forest); font:29px/1.05 Georgia,"Noto Serif CJK KR",serif; }
+.original-reading span { display:block; margin-top:7px; color:#7c827e; font-size:9px; }
+.original-reading p { margin:6px 0 0; color:#463d38; font:13px/1.45 Georgia,"Noto Serif KR",serif; }
+.original-reading em { display:block; margin-top:9px; padding-top:9px; border-top:1px solid var(--line); color:#6b3d31; font:normal 13px/1.5 Georgia,"Noto Serif KR",serif; }
+.original-translation { width:min(900px,100%); margin:17px auto 0; padding:13px 15px; border-left:3px solid var(--cinnabar); background:#fff9f2; color:#574940; font:14px/1.65 Georgia,"Noto Serif KR",serif; }
+.original-translation b { display:block; margin-bottom:3px; color:var(--cinnabar); font:800 9px Arial,"Apple SD Gothic Neo",sans-serif; letter-spacing:.1em; }
+.appendix-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:13px; }
+.appendix-controls button { border:1px solid var(--line); background:rgba(255,255,255,.55); color:var(--ink); padding:8px 12px; font-size:10px; cursor:pointer; }
+.appendix-controls button:last-child { border-color:var(--forest); background:var(--forest); color:white; }
+.appendix-controls span { color:#7a817c; font-size:9px; }
+
+
 @media (max-width:900px) {
   .course-shell { grid-template-columns:1fr; }
   .course-shell.is-rail-collapsed { grid-template-columns:1fr; }
@@ -206,6 +254,11 @@ kbd { display:inline-grid; min-width:19px; height:18px; place-items:center; bord
   .evolution-line { min-width:580px; }
   .evolution-section { overflow-x:auto; }
 }
+@media (max-width:560px) {
+  .appendix-reading-toggle { width:100%; }
+  .appendix-reading-toggle button { min-height:44px; padding-inline:10px; font-size:12px; }
+}
+
 @media print {
   .chapter-rail,.topbar,.character-strip,.quiz-controls { display:none!important; }
   .course-shell { display:block; }

@@ -2,6 +2,8 @@
 
 import HanziWriter from 'hanzi-writer';
 import { useEffect, useRef, useState } from 'react';
+import { sajaseohakPassages as fullSajaseohakPassages } from './sajaseohak-data';
+import { sajaseohakTranslations } from './sajaseohak-translations';
 
 type Character = {
   glyph: string;
@@ -30,6 +32,7 @@ type Chapter = {
   activity: string;
   characters: Character[];
   intro?: boolean;
+  appendix?: boolean;
 };
 
 const chapters: Chapter[] = [
@@ -219,6 +222,14 @@ const chapters: Chapter[] = [
       { glyph: '清', reading: '맑을 청', strokes: 11, kind: '형성', story: '氵가 물의 의미를, 靑이 청에 가까운 소리를 제공합니다. 같은 음부를 가진 晴·請과 비교합니다.', related: ['氵 의미부', '靑 음부', '晴·請 비교'] },
     ],
   },
+  {
+    no: 'A', nav: '부록 · 사자소학', title: '사자소학', focus: '전문 읽기 · 원문 읽기', count: '79', appendix: true,
+    objective: '사자소학 전문을 원문으로 읽고, 오늘의 언어로 뜻을 함께 살펴봅니다.',
+    range: '사자소학 전문 79절',
+    cue: '“이 구절의 뜻을 오늘의 관계 속에서는 어떻게 예의 있게 바꾸어 말할 수 있을까요?”',
+    activity: '원문을 한 번 읽은 뒤 해석을 켜고, 지금도 지킬 수 있는 태도와 다시 생각할 점을 나누어 봅니다.',
+    characters: [{ glyph: '四', reading: '넉 사', strokes: 5, kind: '부록', story: '사자소학을 위한 읽기 화면입니다.', related: [] }],
+  },
 ];
 
 const timeline = [
@@ -379,11 +390,85 @@ function StrokeAnimator({ glyph }: { glyph: string }) {
   );
 }
 
+function SajaSeohakBoard({ readingMode, passageIndex, onPassageChange, onReadingModeChange }: {
+  readingMode: 'meaning' | 'original';
+  passageIndex: number;
+  onPassageChange: (index: number) => void;
+  onReadingModeChange: (mode: 'meaning' | 'original') => void;
+}) {
+  const passage = fullSajaseohakPassages[passageIndex];
+  const previous = () => onPassageChange((passageIndex - 1 + fullSajaseohakPassages.length) % fullSajaseohakPassages.length);
+  const next = () => onPassageChange((passageIndex + 1) % fullSajaseohakPassages.length);
+
+  return (
+    <section className="appendix-board">
+      <header className="appendix-header">
+        <div>
+          <p className="eyebrow">APPENDIX · 四字小學</p>
+          <h2>사자소학</h2>
+          <p className="appendix-subtitle">뜻과 함께 빠르게 읽고, 필요할 때 원문을 살펴보세요.</p>
+          <div className="appendix-reading-toggle" aria-label="사자소학 읽기 방식">
+            <button onClick={() => onReadingModeChange('meaning')} className={readingMode === 'meaning' ? 'active' : ''}>뜻과 함께 읽기</button>
+            <button onClick={() => onReadingModeChange('original')} className={readingMode === 'original' ? 'active' : ''}>원문 읽기</button>
+          </div>
+        </div>
+        <span className="appendix-count">{readingMode === 'meaning' ? `전문 ${fullSajaseohakPassages.length}절` : `${String(passage.no).padStart(2, '0')} / ${fullSajaseohakPassages.length}`}</span>
+      </header>
+
+      <aside className="appendix-preface">
+        <span>이 부록을 여는 말</span>
+        사자소학에는 지금 시대와 맞지 않는 생각도 여럿 있습니다. 그럼에도 여전히 이 내용을 중요하게 생각하시는 어른들이 있기에, 한 번쯤 읽어 보고 예를 갖추려 노력하는 일은 한국에서 살아가는 데 큰 자산이 될지 모릅니다.
+      </aside>
+
+      {readingMode === 'original' && <nav className="passage-nav" aria-label="사자소학 구절 선택">
+        {fullSajaseohakPassages.map((item, index) => (
+          <button key={item.no} onClick={() => onPassageChange(index)} className={index === passageIndex ? 'active' : ''}>
+            <span>{String(item.no).padStart(2, '0')}</span>제{item.no}절
+          </button>
+        ))}
+      </nav>}
+
+      {readingMode === 'meaning' ? (
+        <article className="reading-sheet continuous-reading" aria-label="사자소학 뜻과 함께 읽기">
+          {fullSajaseohakPassages.map((item) => (
+            <section key={item.no} className="continuous-reading-section">
+              <header><span>四字小學 · {String(item.no).padStart(2, '0')}</span></header>
+              <p className="flow-reading">{item.lines.map((line, lineIndex) => <span key={line.hanja} className="flow-reading-unit"><b>{line.hanja}({line.reading})</b> {sajaseohakTranslations[item.no - 1][lineIndex]}</span>)}</p>
+            </section>
+          ))}
+        </article>
+      ) : (
+        <article className="reading-sheet is-original">
+          <header><span>四字小學 · 第 {passage.no} 節</span><h3>제{passage.no}절 원문 읽기</h3></header>
+          <ol className="original-reading" aria-label={`사자소학 제${passage.no}절 원문 읽기`}>
+            {passage.lines.map((line, lineIndex) => (
+              <li key={line.hanja}>
+                <strong>{line.hanja}</strong>
+                <span>{line.reading}</span>
+                <p>{line.hun}</p>
+                <em>{sajaseohakTranslations[passageIndex][lineIndex]}</em>
+              </li>
+            ))}
+          </ol>
+        </article>
+      )}
+
+      {readingMode === 'original' && <div className="appendix-controls">
+        <button onClick={previous}>← 이전 구절</button>
+        <span>네 글자씩 원문을 살피는 중</span>
+        <button onClick={next}>다음 구절 →</button>
+      </div>}
+    </section>
+  );
+}
+
 export default function Home() {
   const [chapterIndex, setChapterIndex] = useState(0);
   const [characterIndex, setCharacterIndex] = useState(0);
   const [mode, setMode] = useState<'explore' | 'plan' | 'quiz'>('explore');
   const [visualMode, setVisualMode] = useState<'ancient' | 'strokes'>('ancient');
+  const [sajaseohakMode, setSajaseohakMode] = useState<'meaning' | 'original'>('meaning');
+  const [sajaseohakPassageIndex, setSajaseohakPassageIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [showTeacherNotes, setShowTeacherNotes] = useState(false);
   const [sideNavCollapsed, setSideNavCollapsed] = useState(false);
@@ -400,17 +485,24 @@ export default function Home() {
     setRevealed(false);
     setMode('explore');
     setVisualMode('ancient');
+    setSajaseohakMode('meaning');
+    setSajaseohakPassageIndex(0);
   };
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (chapter.appendix) {
+        if (event.key === 'ArrowRight') setSajaseohakPassageIndex((i) => (i + 1) % fullSajaseohakPassages.length);
+        if (event.key === 'ArrowLeft') setSajaseohakPassageIndex((i) => (i - 1 + fullSajaseohakPassages.length) % fullSajaseohakPassages.length);
+        return;
+      }
       if (event.key === 'ArrowRight') setCharacterIndex((i) => (i + 1) % chapter.characters.length);
       if (event.key === 'ArrowLeft') setCharacterIndex((i) => (i - 1 + chapter.characters.length) % chapter.characters.length);
       if (event.key === ' ') { event.preventDefault(); setRevealed((value) => !value); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [chapter.characters.length]);
+  }, [chapter.appendix, chapter.characters.length]);
 
   return (
     <main className={`course-shell ${sideNavCollapsed ? 'is-rail-collapsed' : ''}`}>
@@ -448,30 +540,32 @@ export default function Home() {
 
       <section className="lesson-stage">
         <header className="topbar">
-          <div className="mode-tabs" aria-label="화면 모드">
+          {!chapter.appendix && <div className="mode-tabs" aria-label="화면 모드">
             {chapter.intro ? <button className="active">기초 지도</button> : <>
               <button onClick={() => setMode('explore')} className={mode === 'explore' ? 'active' : ''}>글자 탐구</button>
               <button onClick={() => setMode('plan')} className={mode === 'plan' ? 'active' : ''}>수업 설계</button>
               <button onClick={() => { setMode('quiz'); setRevealed(false); }} className={mode === 'quiz' ? 'active' : ''}>퀴즈</button>
             </>}
-          </div>
+          </div>}
           <div className="topbar-actions">
-            <button className={`teacher-toggle ${showTeacherNotes ? 'active' : ''}`} onClick={() => setShowTeacherNotes((value) => !value)}><span>교사 노트</span>{showTeacherNotes ? 'ON' : 'OFF'}</button>
-            {!chapter.intro && <div className="shortcuts"><kbd>←</kbd><kbd>→</kbd> 글자 이동 <kbd>Space</kbd> 정답</div>}
+            {!chapter.appendix && <button className={`teacher-toggle ${showTeacherNotes ? 'active' : ''}`} onClick={() => setShowTeacherNotes((value) => !value)}><span>교사 노트</span>{showTeacherNotes ? 'ON' : 'OFF'}</button>}
+            {chapter.appendix ? <div className="shortcuts"><kbd>←</kbd><kbd>→</kbd> 구절 이동</div> : !chapter.intro && <div className="shortcuts"><kbd>←</kbd><kbd>→</kbd> 글자 이동 <kbd>Space</kbd> 정답</div>}
           </div>
         </header>
 
-        <header className="stage-header">
+        {!chapter.intro && !chapter.appendix && <header className="stage-header">
           <div>
             <p className="eyebrow">CHAPTER {chapter.no} · 50 MIN · {chapter.focus}</p>
             <h2>{chapter.title}</h2>
           </div>
           <div className="time-badge"><strong>{chapter.intro ? '入' : chapter.count}</strong><span>{chapter.intro ? '기초 개념' : chapter.count === '0' ? '종합 활동' : '새 부수'}</span></div>
-        </header>
+        </header>}
 
         {mode === 'explore' && chapter.intro && <FoundationBoard showTeacherNotes={showTeacherNotes} />}
 
-        {mode === 'explore' && !chapter.intro && (
+        {chapter.appendix && <SajaSeohakBoard readingMode={sajaseohakMode} passageIndex={sajaseohakPassageIndex} onPassageChange={setSajaseohakPassageIndex} onReadingModeChange={setSajaseohakMode} />}
+
+        {mode === 'explore' && !chapter.intro && !chapter.appendix && (
           <>
             <section className="hero-panel">
               <div className="visual-panel">
@@ -520,7 +614,7 @@ export default function Home() {
           </>
         )}
 
-        {mode === 'plan' && (
+        {mode === 'plan' && !chapter.appendix && (
           <section className="plan-board">
             <article className="objective-card">
               <span className="lesson-tag">LEARNING GOAL</span>
@@ -542,7 +636,7 @@ export default function Home() {
           </section>
         )}
 
-        {mode === 'quiz' && (
+        {mode === 'quiz' && !chapter.appendix && (
           <section className={`quiz-board ${revealed ? 'revealed' : ''}`}>
             <div className="quiz-number">Q{characterIndex + 1}</div>
             <p>이 글자의 부수와 의미 계열을 추론해 보세요.</p>
@@ -559,8 +653,8 @@ export default function Home() {
         )}
 
         <footer className="stage-footer">
-          <p><strong>오늘의 범위</strong>{chapter.range}</p>
-          <span>{progress} / 10</span>
+          <p><strong>{chapter.appendix ? '부록 범위' : '오늘의 범위'}</strong>{chapter.range}</p>
+          <span>{chapter.appendix ? '부록' : `${progress} / 10`}</span>
         </footer>
       </section>
     </main>
