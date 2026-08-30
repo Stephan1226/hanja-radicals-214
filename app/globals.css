@@ -5,20 +5,34 @@
 html,body { margin:0; min-height:100%; background:var(--paper); color:var(--ink); }
 button { font:inherit; }
 body { font-family:Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; background-image:radial-gradient(rgba(24,35,30,.055) .65px,transparent .65px); background-size:7px 7px; }
-.course-shell { min-height:100vh; display:grid; grid-template-columns:300px minmax(0,1fr); }
-.chapter-rail { background:var(--forest); color:#f8f3e7; padding:30px 26px 24px; display:flex; flex-direction:column; position:relative; overflow:hidden; }
+.course-shell { min-height:100vh; display:grid; grid-template-columns:300px minmax(0,1fr); transition:grid-template-columns .2s ease; }
+.course-shell.is-rail-collapsed { grid-template-columns:88px minmax(0,1fr); }
+.chapter-rail { background:var(--forest); color:#f8f3e7; padding:30px 26px 24px; display:flex; flex-direction:column; position:relative; overflow:hidden; transition:padding .2s ease; }
 .chapter-rail::after { content:'部'; position:absolute; right:-27px; bottom:-90px; font-family:Georgia,serif; font-size:260px; color:rgba(255,255,255,.035); pointer-events:none; }
-.brand-row { display:flex; justify-content:space-between; align-items:flex-start; }
-.brand-mark { width:48px; height:48px; border:1px solid rgba(255,255,255,.6); display:grid; place-items:center; font:27px Georgia,serif; margin-bottom:25px; }
-.menu-hint { border:0; background:transparent; color:rgba(255,255,255,.45); font-size:20px; }
+.brand-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; }
+.brand-symbol { width:48px; height:48px; flex:0 0 auto; }
+.menu-hint { width:44px; height:44px; border:1px solid rgba(255,255,255,.22); border-radius:6px; background:transparent; color:rgba(255,255,255,.78); display:grid; place-items:center; padding:0; cursor:pointer; transition:.15s ease; }
+.menu-hint-icon { width:20px; height:20px; display:block; fill:none; stroke:currentColor; stroke-width:2.35; stroke-linecap:round; stroke-linejoin:round; }
+.menu-hint:hover { border-color:rgba(255,255,255,.65); background:rgba(255,255,255,.08); color:white; }
 .eyebrow { margin:0 0 7px; font-size:10px; letter-spacing:.16em; font-weight:800; opacity:.68; }
 .chapter-rail h1 { font-size:28px; line-height:1.32; letter-spacing:-.045em; margin:0 0 27px; }
 .chapter-rail nav { display:grid; gap:3px; min-height:0; }
 .chapter-link { border:0; color:rgba(255,255,255,.58); background:transparent; border-radius:5px; padding:8px 9px; text-align:left; cursor:pointer; font-size:13px; transition:.15s ease; }
 .chapter-link:hover { color:white; background:rgba(255,255,255,.06); }
-.chapter-link span { display:inline-block; width:31px; font-size:10px; letter-spacing:.08em; }
+.chapter-link .chapter-number { display:inline-block; width:31px; font-size:10px; letter-spacing:.08em; }
 .chapter-link.active { color:white; background:rgba(255,255,255,.11); box-shadow:inset 3px 0 var(--cinnabar); }
 .rail-footer { margin-top:auto; padding-top:20px; font-size:9px; letter-spacing:.12em; opacity:.45; z-index:1; }
+
+.is-rail-collapsed .chapter-rail { padding-inline:12px; }
+.is-rail-collapsed .brand-row { justify-content:center; margin-bottom:20px; }
+.is-rail-collapsed .brand-symbol { display:none; }
+.is-rail-collapsed .menu-hint { width:48px; height:48px; }
+.is-rail-collapsed .menu-hint-icon { width:22px; height:22px; }
+.is-rail-collapsed .chapter-rail>.eyebrow,.is-rail-collapsed .chapter-rail h1,.is-rail-collapsed .rail-footer { display:none; }
+.is-rail-collapsed .chapter-rail nav { gap:6px; }
+.is-rail-collapsed .chapter-link { display:grid; place-items:center; padding:10px 4px; text-align:center; }
+.is-rail-collapsed .chapter-link .chapter-number { width:auto; }
+.is-rail-collapsed .chapter-label { display:none; }
 
 .lesson-stage { min-width:0; padding:22px clamp(28px,4.7vw,72px) 20px; display:flex; flex-direction:column; height:100vh; overflow:auto; }
 .topbar { min-height:33px; display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid var(--line); margin-bottom:19px; }
@@ -156,10 +170,16 @@ kbd { display:inline-grid; min-width:19px; height:18px; place-items:center; bord
 
 @media (max-width:900px) {
   .course-shell { grid-template-columns:1fr; }
+  .course-shell.is-rail-collapsed { grid-template-columns:1fr; }
   .chapter-rail { min-height:auto; padding:14px 18px; display:block; }
   .chapter-rail .brand-row,.chapter-rail h1,.chapter-rail>.eyebrow,.rail-footer { display:none; }
   .chapter-rail nav { display:flex; overflow-x:auto; }
   .chapter-link { white-space:nowrap; padding:8px 10px; }
+  .is-rail-collapsed .chapter-rail { padding:14px 18px; }
+  .is-rail-collapsed .chapter-rail nav { gap:3px; }
+  .is-rail-collapsed .chapter-link { display:block; padding:8px 10px; text-align:left; }
+  .is-rail-collapsed .chapter-link .chapter-number { width:31px; }
+  .is-rail-collapsed .chapter-label { display:inline; }
   .lesson-stage { height:auto; min-height:calc(100vh - 53px); padding:18px 20px; }
   .hero-panel { grid-template-columns:1fr; }
   .visual-panel { min-height:330px; border-right:0; border-bottom:1px solid var(--line); }

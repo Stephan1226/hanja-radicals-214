@@ -386,6 +386,7 @@ export default function Home() {
   const [visualMode, setVisualMode] = useState<'ancient' | 'strokes'>('ancient');
   const [revealed, setRevealed] = useState(false);
   const [showTeacherNotes, setShowTeacherNotes] = useState(false);
+  const [sideNavCollapsed, setSideNavCollapsed] = useState(false);
   const chapter = chapters[chapterIndex];
   const selected = chapter.characters[characterIndex] || chapter.characters[0];
   const quizItem = chapter.characters[characterIndex % chapter.characters.length] || chapter.characters[0];
@@ -412,15 +413,33 @@ export default function Home() {
   }, [chapter.characters.length]);
 
   return (
-    <main className="course-shell">
+    <main className={`course-shell ${sideNavCollapsed ? 'is-rail-collapsed' : ''}`}>
       <aside className="chapter-rail">
-        <div className="brand-row"><div className="brand-mark">漢</div><button className="menu-hint" aria-label="전체 화면 사용 안내">◫</button></div>
+        <div className="brand-row">
+          <svg className="brand-symbol" viewBox="0 0 48 48" aria-label="부수와 획을 나타내는 수업 심볼" role="img">
+            <rect x="1" y="1" width="46" height="46" rx="4" fill="none" stroke="rgba(255,255,255,.62)" />
+            <path d="M14 12v24" stroke="#c34f35" strokeWidth="3" strokeLinecap="round" />
+            <path d="M23 15h12M23 24h9M23 33h12" stroke="#f8f3e7" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+          <button
+            className="menu-hint"
+            type="button"
+            onClick={() => setSideNavCollapsed((value) => !value)}
+            aria-expanded={!sideNavCollapsed}
+            aria-label={sideNavCollapsed ? '사이드 목차 펼치기' : '사이드 목차 접기'}
+            title={sideNavCollapsed ? '사이드 목차 펼치기' : '사이드 목차 접기'}
+          >
+            <svg className="menu-hint-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d={sideNavCollapsed ? 'M9 5.5 15 12 9 18.5' : 'M15 5.5 9 12l6 6.5'} />
+            </svg>
+          </button>
+        </div>
         <p className="eyebrow">214 RADICALS · 10 CLASSES</p>
         <h1>한자의 뿌리,<br />부수 특강</h1>
         <nav aria-label="챕터 목록">
           {chapters.map((item, index) => (
-            <button key={item.no} onClick={() => selectChapter(index)} className={`chapter-link ${index === chapterIndex ? 'active' : ''}`}>
-              <span>{item.no}</span>{item.nav}
+            <button key={item.no} onClick={() => selectChapter(index)} className={`chapter-link ${index === chapterIndex ? 'active' : ''}`} aria-label={`${item.no} ${item.nav}`} title={sideNavCollapsed ? item.nav : undefined}>
+              <span className="chapter-number">{item.no}</span><span className="chapter-label">{item.nav}</span>
             </button>
           ))}
         </nav>
