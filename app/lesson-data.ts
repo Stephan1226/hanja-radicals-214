@@ -12,6 +12,13 @@ export type Character = {
   kind?: string;
   ancientNote?: string;
   ancientLabel?: string;
+  // 종합 복습(10강) 추론 루틴용 필드
+  radical?: string;
+  radicalName?: string;
+  radicalBase?: string;
+  position?: string;
+  family?: string;
+  phonetic?: string;
 };
 
 export type Chapter = {
@@ -28,6 +35,7 @@ export type Chapter = {
   characters: Character[];
   intro?: boolean;
   appendix?: boolean;
+  review?: boolean;
 };
 
 export const chapters: Chapter[] = [
@@ -358,20 +366,26 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    no: '10', nav: '종합 복습', title: '214부수, 하나의 지도로', focus: '찾기 · 분류 · 추론 · 설명', count: '0',
-    objective: '214부수를 모두 같은 강도로 외우지 않고, 핵심 부수를 이용해 낯선 한자의 의미 영역을 추론합니다.',
-    range: '핵심 60~80자는 즉시 뜻 떠올리기 · 나머지는 모양 구별과 사전 찾기 · 변형 부수는 기본형으로 되돌리기',
+    no: '10', nav: '종합 복습', title: '214부수, 하나의 지도로', focus: '찾기 · 분류 · 추론 · 설명', count: '14', countLabel: '적용 한자', review: true,
+    objective: '214부수를 모두 같은 강도로 외우지 않고, 부수의 뜻과 위치 감각, 음부의 소리 단서를 이용해 낯선 한자의 의미 영역을 스스로 추론합니다.',
+    range: '적용 한자 14자 (변·방·머리·발·엄·받침 전 위치) · 변형 부수 22종 기본형 되돌리기 · 1~9강 부수 지도',
     cue: '“정답을 몰라도, 어떤 단서로 어디까지 추론할 수 있나요?”',
-    activity: '화면의 낯선 글자를 보고 ①부수 찾기 ②의미 계열 고르기 ③추론의 근거 말하기 순서로 답합니다.',
+    activity: '낯선 글자를 보고 ①부수 찾기 ②의미 계열 고르기 ③풀이 확인의 순서로 답하고, 변형 부수를 기본형으로 되돌린 뒤 부수 지도에서 오늘 쓴 부수가 어느 강에 있었는지 짚어 봅니다.',
     characters: [
-      { glyph: '河', reading: '물 하', strokes: 8, kind: '추론', story: '氵가 물의 의미를 맡고 可가 소리의 단서가 됩니다. 정확한 뜻을 몰라도 ‘물과 관련된 글자’까지는 좁힐 수 있습니다.', related: ['氵 의미부', '可 음부', '海·湖 비교'] },
-      { glyph: '休', reading: '쉴 휴', strokes: 6, kind: '회의', story: '사람 亻이 나무 木에 기대어 있는 모습으로 풀이합니다. 두 의미 요소의 장면을 말로 재구성해 봅니다.', related: ['亻 사람', '木 나무', '体·林 비교'] },
-      { glyph: '明', reading: '밝을 명', strokes: 8, kind: '회의', story: '日과 月, 두 밝은 대상을 함께 놓아 밝음을 나타낸다고 가르치기 좋은 글자입니다.', related: ['日 해', '月 달', '照·暗 비교'] },
-      { glyph: '想', reading: '생각 상', strokes: 13, kind: '형성·회의', story: '아래의 心이 생각과 마음의 의미를 받치고, 위의 相이 소리와 의미의 단서를 함께 제공합니다.', related: ['心 의미부', '相 음부', '情·忘 비교'] },
-      { glyph: '淸', reading: '맑을 청', strokes: 11, kind: '형성', story: '氵가 물의 의미를, 靑이 청에 가까운 소리를 제공합니다. 같은 음부를 가진 晴·請과 비교합니다.', related: ['氵 의미부', '靑 음부', '晴·請 비교'] },
-      { glyph: '進', reading: '나아갈 진', strokes: 12, kind: '회의·형성', story: '辶이 길을 가는 뜻을 맡고, 새 隹가 앞으로만 나는 새의 움직임을 보탭니다. 받침 부수를 기본형 辵으로 되돌리는 연습에 좋습니다.', related: ['辶 의미부', '隹 새 추', '退·過 비교'] },
-      { glyph: '病', reading: '병 병', strokes: 10, kind: '형성', story: '병질엄 疒이 병듦의 의미를 감싸고, 丙이 소리를 빌려줍니다. 엄 부수가 글자를 덮는 짜임을 확인합니다.', related: ['疒 의미부', '丙 음부', '痛·疲 비교'] },
-      { glyph: '郡', reading: '고을 군', strokes: 10, kind: '형성', story: '오른쪽 阝(우부방)가 고을 邑의 뜻을 맡고 君이 소리를 빌려줍니다. 왼쪽 阝(언덕 부)와 구별하는 마지막 점검 문제입니다.', related: ['阝(邑) 의미부', '君 음부', '都·防 비교'] },
+      { glyph: '河', reading: '물 하', strokes: 8, image: '/oracle/河.svg', source: 'https://commons.wikimedia.org/wiki/File:河-oracle.svg', kind: '형성', radical: '氵', radicalName: '삼수변', radicalBase: '水 물 수', position: '변 (왼쪽)', family: '물·강·액체', phonetic: '可 (옳을 가) → 하', ancientNote: '갑골문에서도 물줄기(水) 옆에 소리 요소를 붙여 황하를 가리켰습니다.', story: '氵가 물의 뜻을 맡고 可가 소리를 빌려줍니다. 본래 황하를 가리키던 이름이 큰 강 전체로 넓어졌습니다. 정확한 뜻을 몰라도 ‘물과 관련된 글자’까지는 좁힐 수 있습니다.', related: ['江 강 강', '海 바다 해', '湖 호수 호'] },
+      { glyph: '休', reading: '쉴 휴', strokes: 6, image: '/oracle/休.svg', source: 'https://commons.wikimedia.org/wiki/File:休-oracle.svg', kind: '회의', radical: '亻', radicalName: '사람인변', radicalBase: '人 사람 인', position: '변 (왼쪽)', family: '사람·행동', ancientNote: '사람(人)이 나무(木) 곁에 기댄 장면이 갑골문부터 그대로 보입니다.', story: '사람 亻이 나무 木에 기대어 쉬는 장면을 합친 회의자입니다. 소리 단서 없이 뜻과 뜻이 만나 새 뜻을 만드는 짜임을 대표합니다.', related: ['住 살 주', '作 지을 작', '信 믿을 신'] },
+      { glyph: '打', reading: '칠 타', strokes: 5, image: '/oracle/打.svg', source: 'https://commons.wikimedia.org/wiki/File:打-seal.svg', ancientLabel: '소전(小篆)', kind: '형성', radical: '扌', radicalName: '재방변', radicalBase: '手 손 수', position: '변 (왼쪽)', family: '손·동작', phonetic: '丁 (고무래 정) → 타', ancientNote: '공개 갑골문·금문 도판이 확인되지 않아 설문계 소전 자형을 제시합니다.', story: '扌가 손동작의 뜻을 맡고 丁이 소리를 빌려줍니다. 정에서 타로 음이 크게 달라져, 음부는 힌트일 뿐 정답이 아니라는 사실도 함께 보여 줍니다.', related: ['投 던질 투', '指 가리킬 지', '拾 주울 습'] },
+      { glyph: '情', reading: '뜻 정', strokes: 11, kind: '형성', radical: '忄', radicalName: '심방변', radicalBase: '心 마음 심', position: '변 (왼쪽)', family: '마음·감정', phonetic: '靑 (푸를 청) → 정', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '忄가 마음의 뜻을 맡고 靑이 소리를 빌려줍니다. 淸·晴·請과 같은 靑 음부 가족으로 묶으면 소리 추론이 훨씬 쉬워집니다.', related: ['性 성품 성', '感 느낄 감', '愛 사랑 애'] },
+      { glyph: '花', reading: '꽃 화', strokes: 8, image: '/oracle/花.svg', source: 'https://commons.wikimedia.org/wiki/File:花-bronze.svg', ancientLabel: '금문(金文) · 華', kind: '형성', radical: '艹', radicalName: '초두머리', radicalBase: '艸 풀 초', position: '머리 (위)', family: '풀·식물', phonetic: '化 (될 화) → 화', ancientNote: '도판은 꽃을 뜻하던 옛 글자 華의 금문입니다. 지금의 花는 뒤에 化 소리를 더해 정리된 형성자입니다.', story: '艹가 식물의 뜻을 맡고 化가 소리를 빌려줍니다. 꽃을 뜻하던 본래 글자는 활짝 핀 꽃나무를 그린 華였고, 花는 그 뒤를 이은 젊은 글자입니다.', related: ['草 풀 초', '華 빛날 화', '藥 약 약'] },
+      { glyph: '罪', reading: '허물 죄', strokes: 13, kind: '회의', radical: '罒', radicalName: '그물망머리', radicalBase: '网 그물 망', position: '머리 (위)', family: '그물·법·잡음', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '그물 罒 아래에 아닐 非를 두어, 그릇된 일을 그물로 잡아들인다는 짜임으로 풀이합니다. 罒을 눈 目으로 잘못 되돌리지 않는 것이 이 문제의 갈림길입니다.', related: ['罰 벌할 벌', '置 둘 치', '刑 형벌 형'] },
+      { glyph: '照', reading: '비칠 조', strokes: 13, image: '/oracle/照.svg', source: 'https://commons.wikimedia.org/wiki/File:照-bronze.svg', ancientLabel: '금문(金文)', kind: '형성', radical: '灬', radicalName: '연화발', radicalBase: '火 불 화', position: '발 (아래)', family: '불·빛·열', phonetic: '昭 (밝을 소) → 조', ancientNote: '공개 갑골문 도판이 확인되지 않아 금문 자형을 제시합니다.', story: '글자 바닥의 灬가 불의 뜻을 맡고, 밝을 昭가 소리를 빌려줍니다. 불빛이 아래에서 위를 비추는 장면으로 기억하면 좋습니다.', related: ['熱 더울 열', '烈 매울 렬', '燃 탈 연'] },
+      { glyph: '想', reading: '생각 상', strokes: 13, kind: '형성', radical: '心', radicalName: '마음 심', position: '발 (아래)', family: '마음·생각', phonetic: '相 (서로 상) → 상', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '아래의 心이 생각의 뜻을 받치고, 위의 相이 소리를 빌려줍니다. 相에는 살펴본다는 뜻도 있어 소리와 뜻을 겸한다는 풀이도 전합니다.', related: ['思 생각 사', '念 생각 념', '感 느낄 감'] },
+      { glyph: '病', reading: '병 병', strokes: 10, kind: '형성', radical: '疒', radicalName: '병질엄', radicalBase: '疒 병들 녁', position: '엄 (위·왼쪽 감쌈)', family: '병·아픔', phonetic: '丙 (남녘 병) → 병', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '침상에 기댄 사람을 그린 疒이 병듦의 뜻으로 글자를 감싸고, 丙이 소리를 빌려줍니다. 엄 부수가 뜻을 지붕처럼 덮는 짜임을 확인합니다.', related: ['痛 아플 통', '疲 피곤할 피', '症 증세 증'] },
+      { glyph: '進', reading: '나아갈 진', strokes: 12, image: '/oracle/進.svg', source: 'https://commons.wikimedia.org/wiki/File:進-oracle.svg', kind: '회의·형성', radical: '辶', radicalName: '책받침', radicalBase: '辵 쉬엄쉬엄 갈 착', position: '받침 (왼쪽 아래 감쌈)', family: '길·움직임', ancientNote: '갑골문은 새(隹) 아래에 발(止)을 그려 나아감을 나타냈습니다.', story: '辶이 길을 가는 뜻을 맡고, 새 隹가 앞으로만 걷는 새의 움직임을 보탭니다. 변형 부수 辶을 기본형 辵으로 되돌리는 대표 연습 글자입니다.', related: ['退 물러날 퇴', '過 지날 과', '速 빠를 속'] },
+      { glyph: '防', reading: '막을 방', strokes: 7, kind: '형성', radical: '阝(왼쪽)', radicalName: '좌부변', radicalBase: '阜 언덕 부', position: '변 (왼쪽)', family: '언덕·막음', phonetic: '方 (모 방) → 방', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '왼쪽 阝가 언덕 阜의 뜻을 맡아 흙으로 막고 가린다는 뜻을 만들고, 方이 소리를 빌려줍니다. 오른쪽 阝(고을 읍)와 구별하는 시금석입니다.', related: ['陽 볕 양', '院 집 원', '階 섬돌 계'] },
+      { glyph: '郡', reading: '고을 군', strokes: 10, kind: '형성', radical: '阝(오른쪽)', radicalName: '우부방', radicalBase: '邑 고을 읍', position: '방 (오른쪽)', family: '마을·행정 구역', phonetic: '君 (임금 군) → 군', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '오른쪽 阝가 고을 邑의 뜻을 맡고 君이 소리를 빌려줍니다. 같은 阝라도 왼쪽은 언덕, 오른쪽은 고을이라는 사실이 마지막 점검 문제입니다.', related: ['都 도읍 도', '部 떼 부', '鄕 시골 향'] },
+      { glyph: '明', reading: '밝을 명', strokes: 8, image: '/oracle/明.svg', source: 'https://commons.wikimedia.org/wiki/File:明-oracle.svg', kind: '회의', radical: '日', radicalName: '날 일', position: '변 (왼쪽)', family: '해·빛·시간', ancientNote: '해(日)와 달(月)을 나란히 둔 자형과 창(囧)에 달빛이 든 자형이 갑골문에 함께 전합니다.', story: '해 日과 달 月, 밝은 것 둘을 나란히 놓아 밝음을 나타낸 회의자의 대표입니다. 부수는 왼쪽의 日이 맡습니다.', related: ['暗 어두울 암', '昭 밝을 소', '朗 밝을 랑'] },
+      { glyph: '淸', reading: '맑을 청', strokes: 11, kind: '형성', radical: '氵', radicalName: '삼수변', radicalBase: '水 물 수', position: '변 (왼쪽)', family: '물·강·액체', phonetic: '靑 (푸를 청) → 청', ancientNote: '공개 재사용이 확인되는 옛 도판을 찾지 못해 설명만 제공합니다. 설문해자에 소전 자형이 전합니다.', story: '河와 같은 氵 가족이면서 情·晴·請과 같은 靑 음부 가족이기도 합니다. 부수로 뜻을, 음부로 소리를 좁히는 오늘 수업의 마무리 글자입니다.', related: ['晴 갤 청', '請 청할 청', '精 정할 정'] },
     ],
   },
   {
@@ -503,6 +517,20 @@ export const standaloneExamples: Record<string, string[]> = {
   飛: ['飛行機 비행기', '飛躍 비약'],
   香: ['香水 향수', '香氣 향기'],
   齊: ['一齊 일제', '齊唱 제창'],
+  河: ['河川 하천', '氷河 빙하'],
+  休: ['休日 휴일', '休息 휴식'],
+  打: ['打者 타자', '安打 안타'],
+  情: ['感情 감정', '友情 우정'],
+  花: ['花壇 화단', '無窮花 무궁화'],
+  罪: ['犯罪 범죄', '謝罪 사죄'],
+  照: ['照明 조명', '對照 대조'],
+  想: ['想像 상상', '感想 감상'],
+  病: ['病院 병원', '疾病 질병'],
+  進: ['進步 진보', '前進 전진'],
+  防: ['防水 방수', '豫防 예방'],
+  郡: ['郡守 군수', '郡廳 군청'],
+  明: ['說明 설명', '發明 발명'],
+  淸: ['淸掃 청소', '淸明 청명'],
 };
 
 export const teacherNotes: Record<string, string> = {
@@ -662,6 +690,17 @@ export const teacherNotes: Record<string, string> = {
   '09:飛': '날 비 飛와 아닐 비 非는 자형이 닮아 혼동하기 쉽습니다. 날개의 방향을 비교해 주세요.',
   '09:香': '벼 禾와 달 감 甘이 합쳐진 글자라는 풀이로 4·5강 내용을 복습할 수 있습니다.',
   '09:齊': '이삭이 가지런한 모습에서 가지런하다가 나왔습니다. 濟州(제주)의 濟에서 음부로 일하는 것을 확인해 주세요.',
+  '10:打': '음부 丁은 정에서 타로 음이 크게 달라진 예입니다. 음부는 소리의 힌트일 뿐 정답이 아니라는 교훈으로 쓰기 좋습니다.',
+  '10:情': '淸·晴·請·精과 함께 靑 음부 가족입니다. 획순 애니메이션은 중국 자형(青)을 따르므로 오른쪽 아래 모양이 한국 활자와 조금 다릅니다.',
+  '10:花': '지금의 花는 소전 이후에 정리된 비교적 늦은 형성자이고, 더 오래된 표기는 華입니다. 한국 자전은 艹를 4획으로 세어 총 8획이지만, 획순 애니메이션은 艹를 3획으로 긋는 중국 표준을 따릅니다.',
+  '10:罪': '본래 죄를 뜻하던 글자는 코(自)와 형벌 침(辛)을 합친 辠였고, 진나라 때 皇과 모양이 비슷하다 하여 罪로 바꿔 쓰게 되었다는 기록이 전합니다.',
+  '10:想': '相이 소리를 맡고 心이 뜻을 받칩니다. 相 자체에 살펴본다는 뜻이 있어 소리와 뜻을 겸한다는 풀이도 함께 소개할 수 있습니다.',
+  '10:病': '疒은 8강에서 배운 병질엄으로, 침상에 기대 누운 사람의 모습입니다. 안의 丙은 소리만 빌려줍니다.',
+  '10:進': '설문해자는 소리 요소가 줄어든 형성자로 풀지만, 수업에서는 앞으로만 걷는 새(隹)의 장면으로 설명하는 회의식 풀이가 잘 통합니다. 두 풀이가 나란히 있음을 알려 주세요.',
+  '10:防': '왼쪽 阝는 언덕 부(阜)입니다. 한국 자전은 阝를 3획으로 세어 총 7획이지만, 획순 애니메이션은 阝를 2획으로 긋는 중국 표준을 따릅니다.',
+  '10:郡': '오른쪽 阝는 고을 읍(邑)입니다. 防과 나란히 놓고 같은 모양의 阝가 자리에 따라 다른 부수라는 점을 최종 점검해 주세요.',
+  '10:明': '갑골문에는 해+달 자형과 창문(囧)+달 자형이 함께 전합니다. 도판과 다른 자형을 만나도 틀린 것이 아님을 알려 주세요.',
+  '10:淸': '한국 활자 淸과 중국 자형 清은 오른쪽 아래가 다릅니다. 획순 데이터는 清 자형을 사용합니다.',
 };
 
 export const positionTypes = [
