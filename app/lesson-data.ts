@@ -20,6 +20,7 @@ export type Chapter = {
   title: string;
   focus: string;
   count: string;
+  countLabel?: string;
   objective: string;
   range: string;
   cue: string;
@@ -248,18 +249,34 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    no: '07', nav: '형태가 변하는 부수', title: '자리 따라 옷을 갈아입다', focus: '변형 부수 · 위치 · 압축', count: '22',
-    objective: '같은 부수가 한자의 왼쪽·아래·위에서 다른 모습으로 변한다는 규칙을 익힙니다.',
-    range: '人→亻 水→氵 心→忄·⺗ 手→扌 火→灬 艸→艹 犬→犭 衣→衤 言→訁 金→釒 糸→糹 食→飠 刀→刂 阜→阝 邑→阝 肉→月',
-    cue: '“모양은 달라졌지만 같은 부수라는 증거를 어디서 찾을 수 있나요?”',
-    activity: '기본형 카드를 변형형 카드에 짝짓고, 실제 한자에서 어느 자리에 있는지 표시합니다.',
+    no: '07', nav: '형태가 변하는 부수', title: '자리 따라 옷을 갈아입다', focus: '변형 부수 · 위치 · 압축', count: '22', countLabel: '변형 정리',
+    objective: '지금까지 배운 부수가 자리에 맞춰 모습을 바꾸는 규칙을 한자리에 모으고, 글자 속에서 언제나 阝로만 나타나는 阜·邑 두 부수를 새로 배웁니다.',
+    range: '새 부수 阜→阝 · 邑→阝 / 복습 人→亻 刀→刂 水→氵 心→忄·⺗ 手→扌 火→灬 艸→艹 犬→犭 玉→王 衣→衤 示→礻 辵→辶 网→罒 食→飠 金→釒 言→訁 糸→糹 肉→月 爪→爫 攴→攵',
+    cue: '“모양은 달라졌지만 같은 부수라는 증거를 어디에서 찾을 수 있나요?”',
+    activity: '기본형 카드와 변형형 카드를 짝지은 뒤, 왼쪽 阝와 오른쪽 阝가 든 글자를 모아 언덕 가족과 고을 가족으로 나눠 봅니다.',
     characters: [
-      { glyph: '人', reading: '사람 인', strokes: 2, variant: '亻', kind: '변형', story: '왼쪽 좁은 자리에 들어가면 오른쪽 획을 세워 亻가 됩니다. 글자 전체의 균형을 위한 압축입니다.', related: ['休', '住', '作'] },
-      { glyph: '水', reading: '물 수', strokes: 4, variant: '氵', kind: '변형', story: '왼쪽에서는 흐르는 물의 세 점만 남겨 氵가 됩니다. 모양이 줄어도 물의 의미는 그대로 유지됩니다.', related: ['河', '海', '洗'] },
-      { glyph: '心', reading: '마음 심', strokes: 4, variant: '忄·⺗', kind: '변형', story: '왼쪽에서는 세로로 긴 忄, 아래에서는 납작한 ⺗ 또는 心으로 자리의 모양에 맞춥니다.', related: ['情', '想', '慕'] },
-      { glyph: '手', reading: '손 수', strokes: 4, variant: '扌', kind: '변형', story: '왼쪽에서 세 획의 扌로 줄어 손의 동작을 나타냅니다. 손이 직접 보이지 않아도 의미는 남습니다.', related: ['打', '投', '指'] },
-      { glyph: '火', reading: '불 화', strokes: 4, variant: '灬', kind: '변형', story: '글자 아래에서는 네 점으로 퍼진 灬가 됩니다. 불꽃이나 열의 흔적을 아래쪽에 납작하게 배치합니다.', related: ['熱', '照', '無'] },
-      { glyph: '艸', reading: '풀 초', strokes: 6, variant: '艹', kind: '변형', story: '글자 위에서는 두 묶음의 새싹을 간결한 艹로 줄입니다. 식물·풀·약재와 관련된 뜻을 엽니다.', related: ['花', '草', '薬'] },
+      { glyph: '阜', reading: '언덕 부', strokes: 8, image: '/oracle/阜.svg', source: 'https://commons.wikimedia.org/wiki/File:阜-oracle.svg', kind: '상형 · 새 부수', variant: '阝(왼쪽)', variantName: '阝 · 좌부변', ancientNote: '층이 진 언덕 비탈이나 흙 계단을 세로로 세워 그렸습니다.', story: '층층이 진 흙 언덕을 세워 그린 글자입니다. 글자 왼쪽에서 阝 좌부변이 되어 언덕·오르내림·막고 가림의 뜻을 더합니다.', related: ['陽 볕 양', '階 섬돌 계', '防 막을 방'] },
+      { glyph: '邑', reading: '고을 읍', strokes: 7, image: '/oracle/邑.svg', source: 'https://commons.wikimedia.org/wiki/File:邑-oracle.svg', kind: '회의 · 새 부수', variant: '阝(오른쪽)', variantName: '阝 · 우부방', ancientNote: '에워싼 구역(囗)과 그 안에 꿇어앉은 사람을 합쳤습니다.', story: '울타리 친 땅과 앉은 사람을 합쳐 사람이 모여 사는 고을을 나타냈습니다. 글자 오른쪽에서 阝 우부방이 되어 마을·행정 구역의 뜻을 더합니다.', related: ['都 도읍 도', '郡 고을 군', '部 떼 부'] },
+      { glyph: '人', reading: '사람 인', strokes: 2, image: '/oracle/人.svg', source: 'https://commons.wikimedia.org/wiki/File:人-oracle.svg', kind: '변형 복습', variant: '亻', variantName: '亻 · 사람인변', story: '왼쪽 좁은 자리에 서면 획을 세운 亻 사람인변이 됩니다. 모양은 줄어도 사람의 행동과 관계라는 뜻은 그대로 남습니다.', related: ['休 쉴 휴', '住 살 주', '作 지을 작'] },
+      { glyph: '刀', reading: '칼 도', strokes: 2, image: '/oracle/刀.svg', source: 'https://commons.wikimedia.org/wiki/File:刀-oracle.svg', kind: '변형 복습', variant: '刂', variantName: '刂 · 선칼도방', story: '오른쪽에 서면 칼날을 세운 刂 선칼도방이 됩니다. 자르고 나누는 뜻이 오른쪽 두 획에 압축됩니다.', related: ['別 다를 별', '利 이로울 리', '刻 새길 각'] },
+      { glyph: '水', reading: '물 수', strokes: 4, image: '/oracle/水.svg', source: 'https://commons.wikimedia.org/wiki/File:水-oracle.svg', kind: '변형 복습', variant: '氵·氺', variantName: '氵 · 삼수변 / 氺 · 아래물수', story: '왼쪽에서는 물줄기를 세 점으로 줄인 氵 삼수변이 됩니다. 강·바다·씻기처럼 물의 뜻은 조금도 변하지 않습니다.', related: ['河 물 하', '汗 땀 한', '洗 씻을 세'] },
+      { glyph: '心', reading: '마음 심', strokes: 4, image: '/oracle/心.svg', source: 'https://commons.wikimedia.org/wiki/File:心-oracle.svg', kind: '변형 복습', variant: '忄·⺗', variantName: '忄 · 심방변 / ⺗ · 마음심발', story: '왼쪽에서는 세로로 긴 忄 심방변, 아래에서는 납작한 ⺗ 마음심발이 됩니다. 자리가 어디든 감정과 생각의 뜻을 맡습니다.', related: ['情 뜻 정', '急 급할 급', '恭 공손할 공'] },
+      { glyph: '手', reading: '손 수', strokes: 4, image: '/oracle/手.svg', source: 'https://commons.wikimedia.org/wiki/File:手-bronze.svg', ancientLabel: '금문(金文)', kind: '변형 복습', variant: '扌', variantName: '扌 · 재방변', ancientNote: '공개 갑골문 도판이 확인되지 않아 금문 자형을 제시합니다.', story: '왼쪽에서 세 획의 扌 재방변으로 줄어듭니다. 잡고 치고 던지는 손동작의 뜻이 그대로 이어집니다.', related: ['打 칠 타', '投 던질 투', '指 가리킬 지'] },
+      { glyph: '火', reading: '불 화', strokes: 4, image: '/oracle/火.svg', source: 'https://commons.wikimedia.org/wiki/File:火-oracle.svg', kind: '변형 복습', variant: '灬', variantName: '灬 · 연화발', story: '글자 아래에서는 불꽃을 네 점으로 편 灬 연화발이 됩니다. 삶고 데우는 열의 뜻이 글자 바닥에 깔립니다.', related: ['熱 더울 열', '照 비칠 조', '烈 매울 렬'] },
+      { glyph: '艸', reading: '풀 초', strokes: 6, image: '/oracle/艸.svg', source: 'https://commons.wikimedia.org/wiki/File:艸-seal.svg', ancientLabel: '소전(小篆)', kind: '변형 복습', variant: '艹', variantName: '艹 · 초두머리', ancientNote: '공개 갑골문 도판이 확인되지 않아 소전 자형을 제시합니다.', story: '글자 위에서는 두 포기 풀을 간추린 艹 초두머리가 됩니다. 풀·나물·약재의 뜻을 위에서 덮습니다.', related: ['花 꽃 화', '草 풀 초', '藥 약 약'] },
+      { glyph: '犬', reading: '개 견', strokes: 4, image: '/oracle/犬.svg', source: 'https://commons.wikimedia.org/wiki/File:犬-oracle.svg', kind: '변형 복습', variant: '犭', variantName: '犭 · 개사슴록변', story: '왼쪽에서 犭 개사슴록변이 됩니다. 개뿐 아니라 여러 짐승의 습성과 사냥의 뜻을 더합니다.', related: ['狩 사냥할 수', '獨 홀로 독', '猫 고양이 묘'] },
+      { glyph: '玉', reading: '구슬 옥', strokes: 5, image: '/oracle/玉.svg', source: 'https://commons.wikimedia.org/wiki/File:玉-oracle.svg', kind: '변형 복습', variant: '王', variantName: '王 · 구슬옥변', story: '왼쪽에서는 점이 빠진 王 모양의 구슬옥변이 됩니다. 임금 왕이 아니라 옥과 보석의 뜻임을 기억합니다.', related: ['珠 구슬 주', '班 나눌 반', '環 고리 환'] },
+      { glyph: '衣', reading: '옷 의', strokes: 6, image: '/oracle/衣.svg', source: 'https://commons.wikimedia.org/wiki/File:衣-oracle.svg', kind: '변형 복습', variant: '衤', variantName: '衤 · 옷의변', story: '왼쪽에서 衤 옷의변이 됩니다. 보일시변 礻보다 점이 하나 많다는 것이 구별의 열쇠입니다.', related: ['被 입을 피', '袖 소매 수', '補 기울 보'] },
+      { glyph: '示', reading: '보일 시', strokes: 5, image: '/oracle/示.svg', source: 'https://commons.wikimedia.org/wiki/File:示-oracle.svg', kind: '변형 복습', variant: '礻', variantName: '礻 · 보일시변', story: '왼쪽에서 礻 보일시변이 됩니다. 제사와 신의 뜻은 그대로이고, 옷의변 衤와의 점 개수 차이만 조심하면 됩니다.', related: ['神 귀신 신', '祈 빌 기', '祝 빌 축'] },
+      { glyph: '辵', reading: '쉬엄쉬엄 갈 착', strokes: 7, image: '/oracle/辵.svg', source: 'https://commons.wikimedia.org/wiki/File:辵-seal.svg', ancientLabel: '소전(小篆)', kind: '변형 복습', variant: '辶', variantName: '辶 · 책받침', ancientNote: '공개 갑골문 도판이 확인되지 않아 소전 자형을 제시합니다.', story: '받침 자리에서 辶 책받침이 되어 왼쪽 아래를 감쌉니다. 길을 가는 움직임의 뜻이 글자 전체를 떠받칩니다.', related: ['道 길 도', '過 지날 과', '送 보낼 송'] },
+      { glyph: '网', reading: '그물 망', strokes: 6, image: '/oracle/网.svg', source: 'https://commons.wikimedia.org/wiki/File:网-oracle.svg', kind: '변형 복습', variant: '罒', variantName: '罒 · 그물망머리', story: '글자 위에서는 罒로 눕습니다. 그물로 잡고 가두는 뜻이며, 눈 目을 눕힌 모양과 혼동하지 않아야 합니다.', related: ['罪 허물 죄', '罰 벌할 벌', '置 둘 치'] },
+      { glyph: '食', reading: '밥 식', strokes: 9, image: '/oracle/食.svg', source: 'https://commons.wikimedia.org/wiki/File:食-oracle.svg', kind: '변형 복습', variant: '飠', variantName: '飠 · 밥식변', story: '왼쪽에서 飠 밥식변이 됩니다. 먹고 마시고 기르는 뜻이 그대로 이어집니다.', related: ['飯 밥 반', '餓 주릴 아', '館 집 관'] },
+      { glyph: '金', reading: '쇠 금', strokes: 8, image: '/oracle/金.svg', source: 'https://commons.wikimedia.org/wiki/File:金-bronze.svg', ancientLabel: '금문(金文)', kind: '변형 복습', variant: '釒', variantName: '釒 · 쇠금변', ancientNote: '공개 갑골문 도판이 확인되지 않아 금문 자형을 제시합니다.', story: '왼쪽에서 釒 쇠금변이 됩니다. 금속과 도구의 뜻을 지키며 수많은 광물·기물 글자를 만듭니다.', related: ['針 바늘 침', '鏡 거울 경', '錄 기록할 록'] },
+      { glyph: '言', reading: '말씀 언', strokes: 7, image: '/oracle/言.svg', source: 'https://commons.wikimedia.org/wiki/File:言-oracle.svg', kind: '변형 복습', variant: '訁', variantName: '訁 · 말씀언변', story: '왼쪽에서 訁 말씀언변이 됩니다. 한국 활자에서는 모양 차이가 거의 없지만 자리 이름으로 익혀 둡니다.', related: ['話 말씀 화', '請 청할 청', '論 논할 론'] },
+      { glyph: '糸', reading: '실 사', strokes: 6, image: '/oracle/糸.svg', source: 'https://commons.wikimedia.org/wiki/File:糸-oracle.svg', kind: '변형 복습', variant: '糹', variantName: '糹 · 실사변', story: '왼쪽에서 糹 실사변이 됩니다. 실로 잇고 묶고 짜는 뜻이 이어집니다.', related: ['紅 붉을 홍', '給 줄 급', '織 짤 직'] },
+      { glyph: '肉', reading: '고기 육', strokes: 6, image: '/oracle/肉.webp', source: 'https://commons.wikimedia.org/wiki/File:肉-oracle.svg', kind: '변형 복습', variant: '月', variantName: '月 · 육달월', story: '글자 속에서는 月 모양의 육달월이 됩니다. 달 月과 모양이 같아지므로 몸과 관련된 뜻인지로 구별합니다.', related: ['肝 간 간', '腦 골 뇌', '育 기를 육'] },
+      { glyph: '爪', reading: '손톱 조', strokes: 4, image: '/oracle/爪.png', source: 'https://commons.wikimedia.org/wiki/File:爪-oracle.svg', kind: '변형 복습', variant: '爫', variantName: '爫 · 손톱조머리', story: '글자 위에서는 爫 손톱조머리가 됩니다. 위에서 아래로 잡고 집는 손의 뜻이 남습니다.', related: ['爭 다툴 쟁', '受 받을 수', '采 캘 채'] },
+      { glyph: '攴', reading: '칠 복', strokes: 4, image: '/oracle/攴.svg', source: 'https://commons.wikimedia.org/wiki/File:攴-oracle.svg', kind: '변형 복습', variant: '攵', variantName: '攵 · 등글월문', story: '오른쪽에서 攵 등글월문이 됩니다. 회초리로 치고 다스리는 동작의 뜻이 이어집니다.', related: ['敎 가르칠 교', '政 정사 정', '敗 패할 패'] },
     ],
   },
   {
@@ -407,6 +424,7 @@ export const standaloneExamples: Record<string, string[]> = {
   工: ['工場 공장', '工夫 공부'],
   文: ['文字 문자', '文化 문화'],
   示: ['示範 시범', '表示 표시'],
+  邑: ['邑內 읍내', '都邑 도읍'],
 };
 
 export const teacherNotes: Record<string, string> = {
@@ -509,6 +527,14 @@ export const teacherNotes: Record<string, string> = {
   '06:文': '본뜻은 몸에 새긴 무늬이고 글월은 확장된 뜻입니다. 무늬의 뜻은 실 糸를 더한 紋이 이어받았습니다.',
   '06:卜': '거북 배딱지를 지질 때 갈라진 금(또는 그때 나는 소리)을 나타냅니다. 갑골문 수업 전체와 이어지는 열쇠 부수입니다.',
   '06:示': '제단의 상형으로 신·제사·복 계열(神·祖·福)을 묶습니다. 왼쪽에서는 礻 보일시변으로 줄어듭니다.',
+  '07:阜': '阝가 왼쪽에 있으면 언덕 阜, 오른쪽에 있으면 고을 邑입니다. 좌부변·우부방이라는 이름 자체가 자리를 알려 줍니다.',
+  '07:邑': '都·郡·部처럼 행정·마을 글자의 오른쪽 阝는 모두 邑입니다. 사전의 부수 찾기에서도 오른쪽 阝는 邑부로 실립니다.',
+  '07:火': '無의 아래 灬는 불이 아니라 춤추는 사람의 소맷자락이 변한 것입니다. 모양이 같아도 기원이 다른 경우가 있음을 소개해 주세요.',
+  '07:玉': '班은 구슬 두 꾸러미(玨)를 칼로 나누는 글자입니다. 왼쪽의 王 모양이 임금이 아니라 옥이라는 사실을 거듭 확인해 주세요.',
+  '07:示': '衤(옷의변)는 礻(보일시변)보다 점이 하나 많습니다. 初(옷을 마름질)와 祝(제단 앞 사람)처럼 뜻으로도 확인하게 해 주세요.',
+  '07:网': '買의 윗부분도 본래 그물이지만 자전에서는 貝부에 속합니다. 부수 분류와 자형의 기원이 다를 수 있음을 보여 주세요.',
+  '07:言': '한국 인쇄 활자에서는 言과 訁의 차이가 거의 드러나지 않습니다. 자리 이름만 익히면 충분합니다.',
+  '07:肉': '달 月과 육달월은 오늘날 자형이 같습니다. 글자의 뜻이 몸·살·장기와 이어지면 육달월로 판단하게 해 주세요.',
 };
 
 export const positionTypes = [

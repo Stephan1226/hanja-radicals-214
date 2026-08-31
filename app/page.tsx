@@ -355,7 +355,7 @@ export default function Home() {
             <p className="eyebrow">CHAPTER {chapter.no} · 50 MIN · {chapter.focus}</p>
             <h2>{chapter.title}</h2>
           </div>
-          <div className="time-badge"><strong>{chapter.intro ? '入' : chapter.count}</strong><span>{chapter.intro ? '기초 개념' : chapter.count === '0' ? '종합 활동' : '새 부수'}</span></div>
+          <div className="time-badge"><strong>{chapter.intro ? '入' : chapter.count}</strong><span>{chapter.intro ? '기초 개념' : chapter.countLabel || (chapter.count === '0' ? '종합 활동' : '새 부수')}</span></div>
         </header>}
 
         {mode === 'explore' && chapter.intro && <FoundationBoard showTeacherNotes={showTeacherNotes} currentSlide={introSlide} onSlideChange={setIntroSlide} />}
