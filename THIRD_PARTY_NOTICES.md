@@ -1,5 +1,19 @@
 # Third-party notices
 
+## 옛 자형 도판 (갑골문·금문·대전·소전)
+
+`public/oracle/`의 옛 자형 이미지는 Wikimedia Commons에 공개된 고문자 자형 파일(주로 Ancient Chinese characters 프로젝트의 SVG)을 사용합니다. 파일별 저작자와 라이선스(CC BY-SA 3.0 등)는 각 글자 카드의 "도판·시대 출처 확인" 링크로 연결되는 원본 파일 페이지에 명시되어 있습니다.
+
+- Source: https://commons.wikimedia.org/ (각 카드의 출처 링크 참조)
+- License: 파일별 표기를 따름 (Public Domain / CC BY-SA 계열)
+
+## 획순 데이터
+
+`public/strokes/`의 획순 JSON은 Hanzi Writer Data에서 가져왔습니다. 한국 표준 자형과 다른 일부 글자(예: 靑)는 대응 자형(青)의 데이터를 사용합니다.
+
+- Source: https://github.com/chanind/hanzi-writer-data
+- License: Arphic Public License (원 데이터: Make Me a Hanzi / Arphic 서체 파생)
+
 ## 사자소학 원문
 
 이 사이트의 사자소학 한문 원문은 저작권 보호기간이 지난 고전 작품을 대상으로 합니다. 현대어 번역문, 해설, 교감, 표점, 편집 구조는 별도 저작권의 대상이 될 수 있으므로 수록하지 않습니다.
