@@ -39,7 +39,7 @@ const chapters: Chapter[] = [
   {
     no: '00', nav: '수업 들어가기', title: '부수와 필순의 지도', focus: '위치 · 명칭 · 필순 · 자형 변화', count: '0', intro: true,
     objective: '부수가 글자 안에서 놓이는 위치의 이름을 알고, 기본 필순과 갑골문에서 해서까지의 자형 변화를 한눈에 이해합니다.',
-    range: '변 · 방 · 머리 · 발 · 엄/몸 · 받침 · 제부수 / 기본 필순 8원칙 / 갑골문 → 금문 → 소전 → 예서 → 해서',
+    range: '변 · 방 · 머리 · 발 · 엄 · 몸 · 받침 · 제부수 / 기본 필순 8원칙 / 갑골문 → 금문 → 소전 → 예서 → 해서',
     cue: '“같은 부수도 자리가 달라지면 왜 모양과 이름이 달라질까요?”',
     activity: '글자의 부수 위치를 말하고, 다음 획을 손가락으로 예측한 뒤 자형 변화에서 남은 특징을 찾아봅니다.',
     characters: [
@@ -281,13 +281,14 @@ const teacherNotes: Record<string, string> = {
 };
 
 const positionTypes = [
-  { name: '변(邊)', place: '왼쪽', glyphs: '亻 氵 扌 忄 衤', examples: '사람인변 · 삼수변 · 재방변 · 심방변 · 옷의변' },
-  { name: '방(旁)', place: '오른쪽', glyphs: '刂 阝 攵 頁', examples: '선칼도방 · 고을읍방 · 칠복방 · 머리혈방' },
-  { name: '머리', place: '위쪽', glyphs: '艹 宀 ⺮ 雨', examples: '초두머리 · 갓머리 · 대죽머리 · 비우머리' },
-  { name: '발', place: '아래쪽', glyphs: '灬 心 皿 儿', examples: '연화발 · 마음심발 · 그릇명발 · 어진사람인발' },
-  { name: '엄·몸', place: '바깥', glyphs: '广 尸 門 囗', examples: '민엄호 · 주검시엄 · 문문몸 · 큰입구몸' },
-  { name: '받침', place: '왼쪽 아래', glyphs: '辶 廴 走', examples: '책받침 · 민책받침 · 달아날주받침' },
-  { name: '제부수', place: '글자 전체', glyphs: '木 日 山', examples: '글자 자체가 곧 부수인 경우' },
+  { name: '변(邊)', place: '왼쪽', area: 'left', radicals: ['亻(休)', '氵(江)', '扌(打)', '忄(情)', '衤(初)'], description: '부수가 글자의 왼쪽에 나란히 놓입니다. 글자를 볼 때 가장 먼저 눈에 들어오는 뜻의 단서예요.' },
+  { name: '방(旁)', place: '오른쪽', area: 'right', radicals: ['刂(別)', '阝(郡)', '攵(故)', '頁(順)'], description: '부수가 글자의 오른쪽에 놓입니다. 왼쪽 부분과 짝을 이루어 글자의 뜻이나 소리를 돕습니다.' },
+  { name: '머리', place: '위쪽', area: 'top', radicals: ['艹(草)', '宀(安)', '⺮(答)', '雨(雪)'], description: '부수가 글자의 맨 위에 올라갑니다. 지붕이나 풀처럼 위에서 덮는 모양을 떠올리면 쉬워요.' },
+  { name: '발', place: '아래쪽', area: 'bottom', radicals: ['灬(熱)', '⺗(恭)', '皿(益)', '儿(元)'], description: '부수가 글자의 아래를 받칩니다. 글자의 발처럼 가장 아랫자리에 놓이는 부수예요.' },
+  { name: '엄', place: '위·왼쪽', area: 'cover', radicals: ['广(床)', '厂(厚)', '尸(居)', '疒(病)'], description: '부수가 글자의 위와 왼쪽을 덮듯 놓입니다. 안쪽의 다른 부분을 감싸는 모양을 확인해 보세요.' },
+  { name: '몸', place: '바깥', area: 'surround', radicals: ['門(問)', '囗(國)', '凵(函)'], description: '부수가 글자의 바깥을 둘러쌉니다. 안에 다른 부분을 품는 틀처럼 보이는 자리예요.' },
+  { name: '받침', place: '왼쪽 아래', area: 'base', radicals: ['辶(近)', '廴(建)', '走(趙)'], description: '부수가 글자의 왼쪽 아래에서 나머지 부분을 받칩니다. 길이나 움직임을 나타내는 글자에서 자주 만나요.' },
+  { name: '제부수', place: '글자 전체', area: 'whole', radicals: ['木(木)', '日(日)', '山(山)'], description: '글자 전체가 그대로 부수입니다. 다른 부분과 결합하지 않아도 하나의 부수로 쓰여요.' },
 ];
 
 const strokeRules = [
@@ -303,27 +304,121 @@ const evolutionSteps = [
   { name: '해서', period: '후한 이후', glyph: '人', note: '획이 정돈되어 표준화' },
 ];
 
-function FoundationBoard({ showTeacherNotes }: { showTeacherNotes: boolean }) {
+const introSlides = [
+  { label: 'OPENING', title: '한자는 왜 배울까?', description: '수업을 시작하기 전, 오늘의 배움이 나와 어떻게 이어지는지 생각해 봅니다.' },
+  { label: 'RADICAL POSITION', title: '부수는 글자 안에서 자리를 잡아요', description: '같은 한자 구성 요소도 놓인 자리에 따라 읽는 이름이 달라집니다.' },
+  { label: 'RADICAL VARIANTS', title: '자리가 바뀌면 모양도 달라져요', description: '글자 안에 자연스럽게 들어가기 위해 부수는 조금씩 모습을 바꿉니다.' },
+  { label: 'STROKE ORDER', title: '필순에는 읽기 쉬운 흐름이 있어요', description: '글자를 쓰는 순서도 모양을 안정적으로 기억하게 하는 규칙입니다.' },
+  { label: 'SCRIPT EVOLUTION', title: '그림은 오랜 시간 글자가 되었어요', description: '사람의 모습을 그린 人이 오늘의 한자로 정리되기까지를 살펴봅니다.' },
+];
+
+function WhyHanjaSlide() {
   return (
-    <section className="foundation-board">
-      <article className="foundation-section position-section">
-        <div className="section-heading"><span className="lesson-tag">RADICAL POSITION</span><h3>부수의 위치와 명칭</h3></div>
-        <div className="position-grid">
-          {positionTypes.map((item) => <div className="position-item" key={item.name}><span>{item.place}</span><strong>{item.name}</strong><b>{item.glyphs}</b><small>{item.examples}</small></div>)}
+    <div className="why-hanja-slide">
+      <div className="why-hanja-copy">
+        <span className="lesson-tag">WHY HANJA</span>
+        <h3>한자는 왜 배울까?</h3>
+        <p>이 슬라이드는 선생님의 이야기로 채우는 자리입니다.</p>
+      </div>
+      <div className="why-hanja-placeholder">
+        <span>YOUR OPENING MESSAGE</span>
+        <strong>여기에 수업을 여는<br />이야기를 적어 주세요.</strong>
+        <small>학습 동기 · 생활 속 한자 · 오늘 수업과의 연결</small>
+      </div>
+    </div>
+  );
+}
+
+function PositionSlide() {
+  const [selectedPositionIndex, setSelectedPositionIndex] = useState(0);
+  const selectedPosition = positionTypes[selectedPositionIndex];
+
+  return (
+    <div className="position-slide">
+      <div className="slide-lead">
+        <p>부수는 한자를 찾고 뜻을 짐작하게 하는 <strong>의미의 단서</strong>예요.</p>
+        <span>위치 이름을 누르면, 부수가 글자 안에서 차지하는 자리를 크게 볼 수 있어요.</span>
+      </div>
+      <div className="position-showcase">
+        <div className="position-picker" aria-label="부수 위치 선택">
+          <span>부수 위치</span>
+          <div>
+            {positionTypes.map((item, index) => <button key={item.name} onClick={() => setSelectedPositionIndex(index)} className={index === selectedPositionIndex ? 'active' : ''} aria-pressed={index === selectedPositionIndex}>{item.name}</button>)}
+          </div>
+        </div>
+        <div className="position-map-wrap">
+          <div className={`position-map is-${selectedPosition.area}`} aria-label={`${selectedPosition.name}은 글자 ${selectedPosition.place}에 놓입니다.`}>
+            <div className="position-highlight" />
+            <div className="position-map-core" />
+          </div>
+          <strong>{selectedPosition.name}</strong>
+        </div>
+        <article className="position-explainer">
+          <span>{selectedPosition.place}</span>
+          <h4>{selectedPosition.name}</h4>
+          <p>{selectedPosition.description}</p>
+          <div><b>대표 부수</b><ul>{selectedPosition.radicals.map((radical) => <li key={radical}>{radical}</li>)}</ul></div>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+function VariantSlide() {
+  return (
+    <div className="variant-slide">
+      <div className="variant-focus"><span className="lesson-tag">ONE RADICAL, MANY FORMS</span><b>心</b><strong>마음 심</strong></div>
+      <div className="variant-flow">
+        <article><div className="variant-glyph">心</div><strong>글자 아래</strong><span>마음심발</span><p>想 · 忘</p></article>
+        <i>→</i>
+        <article><div className="variant-glyph accent">忄</div><strong>글자 왼쪽</strong><span>심방변</span><p>情 · 急</p></article>
+        <i>→</i>
+        <article><div className="variant-glyph">⺗</div><strong>글자 아래</strong><span>마음심발</span><p>恭 · 慕</p></article>
+      </div>
+      <p className="slide-note">뜻의 뿌리는 이어지지만, 위치와 글자 모양에 맞춰 부수의 모습과 이름이 바뀝니다.</p>
+    </div>
+  );
+}
+
+function StrokeSlide() {
+  return (
+    <div className="stroke-slide">
+      <ol className="stroke-rules">{strokeRules.map(([no, rule, examples]) => <li key={no}><span>{no}</span><b>{rule}</b><em>{examples}</em></li>)}</ol>
+      <p className="rule-caveat">원칙은 출발점입니다. 개별 글자의 표준 필순과 예외는 획순 애니메이션으로 다시 확인합니다.</p>
+    </div>
+  );
+}
+
+function EvolutionSlide() {
+  return (
+    <div className="evolution-slide"><div className="evolution-line">
+      {evolutionSteps.map((step, index) => <div className="evolution-step" key={step.name}>{index > 0 && <i>→</i>}<div className="evolution-glyph">{step.image ? <img src={step.image} alt={`人의 ${step.name} 자형`} /> : step.glyph}</div><strong>{step.name}</strong><span>{step.period}</span><small>{step.note}</small></div>)}
+    </div></div>
+  );
+}
+
+function FoundationBoard({ showTeacherNotes, currentSlide, onSlideChange }: { showTeacherNotes: boolean; currentSlide: number; onSlideChange: (index: number) => void }) {
+  const slide = introSlides[currentSlide];
+  const previous = () => onSlideChange((currentSlide - 1 + introSlides.length) % introSlides.length);
+  const next = () => onSlideChange((currentSlide + 1) % introSlides.length);
+
+  return (
+    <section className="intro-deck">
+      <div className="intro-progress" aria-label={`슬라이드 ${currentSlide + 1} / ${introSlides.length}`}>
+        {introSlides.map((item, index) => <button key={item.label} onClick={() => onSlideChange(index)} className={index === currentSlide ? 'active' : ''} aria-label={`${index + 1}번 슬라이드: ${item.title}`} />)}
+      </div>
+      <article className={`intro-slide intro-slide-${currentSlide}`}>
+        <header className="intro-slide-header"><span className="lesson-tag">{slide.label}</span><span className="slide-count">0{currentSlide + 1} / 0{introSlides.length}</span><h3>{slide.title}</h3><p>{slide.description}</p></header>
+        <div className="intro-slide-content">
+          {currentSlide === 0 && <WhyHanjaSlide />}
+          {currentSlide === 1 && <PositionSlide />}
+          {currentSlide === 2 && <VariantSlide />}
+          {currentSlide === 3 && <StrokeSlide />}
+          {currentSlide === 4 && <EvolutionSlide />}
         </div>
       </article>
-      <article className="foundation-section stroke-section">
-        <div className="section-heading"><span className="lesson-tag">STROKE ORDER</span><h3>필순의 기본 원칙</h3></div>
-        <ol className="stroke-rules">{strokeRules.map(([no, rule, examples]) => <li key={no}><span>{no}</span><b>{rule}</b><em>{examples}</em></li>)}</ol>
-        <p className="rule-caveat">원칙은 출발점입니다. 개별 글자의 표준 필순과 예외는 획순 애니메이션으로 다시 확인합니다.</p>
-      </article>
-      <article className="foundation-section evolution-section">
-        <div className="section-heading"><span className="lesson-tag">SCRIPT EVOLUTION</span><h3>人으로 보는 자형의 변화</h3></div>
-        <div className="evolution-line">
-          {evolutionSteps.map((step, index) => <div className="evolution-step" key={step.name}>{index > 0 && <i>→</i>}<div className="evolution-glyph">{step.image ? <img src={step.image} alt={`人의 ${step.name} 자형`} /> : step.glyph}</div><strong>{step.name}</strong><span>{step.period}</span><small>{step.note}</small></div>)}
-        </div>
-      </article>
-      {showTeacherNotes && <aside className="foundation-note"><b>교사 노트</b> 부수 위치의 관용 명칭은 사전·교재에 따라 조금씩 다를 수 있습니다. 학생에게는 ‘왼쪽/오른쪽/위/아래/감쌈’의 공간 개념을 먼저 익히게 하고, 세부 명칭은 실제 글자와 함께 확인하세요. 자형 변화는 한 단계가 일시에 다른 단계로 교체된 것이 아니라 오랜 기간 여러 서체가 겹쳐 쓰였다는 점도 덧붙입니다.</aside>}
+      {showTeacherNotes && currentSlide === 1 && <aside className="foundation-note"><b>교사 노트</b> 먼저 왼쪽·오른쪽·위·아래·감싼 자리를 말하게 한 뒤, 변·방·머리·발 같은 관용 명칭을 붙여 주세요. 명칭은 사전·교재에 따라 조금씩 다를 수 있습니다.</aside>}
+      <div className="slide-controls"><button onClick={previous}>← 이전</button><span><kbd>←</kbd><kbd>→</kbd>로 넘기기</span><button onClick={next}>다음 →</button></div>
     </section>
   );
 }
@@ -465,6 +560,7 @@ function SajaSeohakBoard({ readingMode, passageIndex, onPassageChange, onReading
 export default function Home() {
   const [chapterIndex, setChapterIndex] = useState(0);
   const [characterIndex, setCharacterIndex] = useState(0);
+  const [introSlide, setIntroSlide] = useState(0);
   const [mode, setMode] = useState<'explore' | 'plan' | 'quiz'>('explore');
   const [visualMode, setVisualMode] = useState<'ancient' | 'strokes'>('ancient');
   const [sajaseohakMode, setSajaseohakMode] = useState<'meaning' | 'original'>('meaning');
@@ -485,6 +581,7 @@ export default function Home() {
     setRevealed(false);
     setMode('explore');
     setVisualMode('ancient');
+    setIntroSlide(0);
     setSajaseohakMode('meaning');
     setSajaseohakPassageIndex(0);
   };
@@ -496,13 +593,18 @@ export default function Home() {
         if (event.key === 'ArrowLeft') setSajaseohakPassageIndex((i) => (i - 1 + fullSajaseohakPassages.length) % fullSajaseohakPassages.length);
         return;
       }
+      if (chapter.intro) {
+        if (event.key === 'ArrowRight') setIntroSlide((i) => (i + 1) % introSlides.length);
+        if (event.key === 'ArrowLeft') setIntroSlide((i) => (i - 1 + introSlides.length) % introSlides.length);
+        return;
+      }
       if (event.key === 'ArrowRight') setCharacterIndex((i) => (i + 1) % chapter.characters.length);
       if (event.key === 'ArrowLeft') setCharacterIndex((i) => (i - 1 + chapter.characters.length) % chapter.characters.length);
       if (event.key === ' ') { event.preventDefault(); setRevealed((value) => !value); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [chapter.appendix, chapter.characters.length]);
+  }, [chapter.appendix, chapter.characters.length, chapter.intro]);
 
   return (
     <main className={`course-shell ${sideNavCollapsed ? 'is-rail-collapsed' : ''}`}>
@@ -541,7 +643,7 @@ export default function Home() {
       <section className="lesson-stage">
         <header className="topbar">
           {!chapter.appendix && <div className="mode-tabs" aria-label="화면 모드">
-            {chapter.intro ? <button className="active">기초 지도</button> : <>
+            {chapter.intro ? <button className="active">도입 슬라이드</button> : <>
               <button onClick={() => setMode('explore')} className={mode === 'explore' ? 'active' : ''}>글자 탐구</button>
               <button onClick={() => setMode('plan')} className={mode === 'plan' ? 'active' : ''}>수업 설계</button>
               <button onClick={() => { setMode('quiz'); setRevealed(false); }} className={mode === 'quiz' ? 'active' : ''}>퀴즈</button>
@@ -549,7 +651,7 @@ export default function Home() {
           </div>}
           <div className="topbar-actions">
             {!chapter.appendix && <button className={`teacher-toggle ${showTeacherNotes ? 'active' : ''}`} onClick={() => setShowTeacherNotes((value) => !value)}><span>교사 노트</span>{showTeacherNotes ? 'ON' : 'OFF'}</button>}
-            {chapter.appendix ? <div className="shortcuts"><kbd>←</kbd><kbd>→</kbd> 구절 이동</div> : !chapter.intro && <div className="shortcuts"><kbd>←</kbd><kbd>→</kbd> 글자 이동 <kbd>Space</kbd> 정답</div>}
+            <div className="shortcuts">{chapter.appendix ? <><kbd>←</kbd><kbd>→</kbd> 구절 이동</> : chapter.intro ? <><kbd>←</kbd><kbd>→</kbd> 슬라이드 이동</> : <><kbd>←</kbd><kbd>→</kbd> 글자 이동 <kbd>Space</kbd> 정답</>}</div>
           </div>
         </header>
 
@@ -561,7 +663,7 @@ export default function Home() {
           <div className="time-badge"><strong>{chapter.intro ? '入' : chapter.count}</strong><span>{chapter.intro ? '기초 개념' : chapter.count === '0' ? '종합 활동' : '새 부수'}</span></div>
         </header>}
 
-        {mode === 'explore' && chapter.intro && <FoundationBoard showTeacherNotes={showTeacherNotes} />}
+        {mode === 'explore' && chapter.intro && <FoundationBoard showTeacherNotes={showTeacherNotes} currentSlide={introSlide} onSlideChange={setIntroSlide} />}
 
         {chapter.appendix && <SajaSeohakBoard readingMode={sajaseohakMode} passageIndex={sajaseohakPassageIndex} onPassageChange={setSajaseohakPassageIndex} onReadingModeChange={setSajaseohakMode} />}
 
