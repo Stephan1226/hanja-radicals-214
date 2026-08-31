@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { sajaseohakPassages as fullSajaseohakPassages } from './sajaseohak-data';
 import { sajaseohakTranslations } from './sajaseohak-translations';
 
-import { chapters, timeline, standaloneExamples, teacherNotes, positionTypes, strokeRules, evolutionSteps, introSlides } from './lesson-data';
+import { chapters, timeline, standaloneExamples, teacherNotes, positionTypes, strokeRules, evolutionSteps, introSlides, type Chapter } from './lesson-data';
 
 function WhyHanjaSlide() {
   return (
@@ -114,6 +114,152 @@ function FoundationBoard({ showTeacherNotes, currentSlide, onSlideChange }: { sh
       </article>
       {showTeacherNotes && currentSlide === 1 && <aside className="foundation-note"><b>교사 노트</b> 먼저 왼쪽·오른쪽·위·아래·감싼 자리를 말하게 한 뒤, 변·방·머리·발 같은 관용 명칭을 붙여 주세요. 명칭은 사전·교재에 따라 조금씩 다를 수 있습니다.</aside>}
       <div className="slide-controls"><button onClick={previous}>← 이전</button><span><kbd>←</kbd><kbd>→</kbd>로 넘기기</span><button onClick={next}>다음 →</button></div>
+    </section>
+  );
+}
+
+function ReviewBoard({ chapter, characterIndex, onSelectCharacter, showTeacherNotes, onNavigateChapter }: {
+  chapter: Chapter;
+  characterIndex: number;
+  onSelectCharacter: (index: number) => void;
+  showTeacherNotes: boolean;
+  onNavigateChapter: (index: number) => void;
+}) {
+  const [view, setView] = useState<'infer' | 'variants' | 'map'>('infer');
+  const [step, setStep] = useState(0);
+  const [showStrokes, setShowStrokes] = useState(false);
+  const [openVariants, setOpenVariants] = useState<Record<string, boolean>>({});
+  const [lastCharacterIndex, setLastCharacterIndex] = useState(characterIndex);
+  if (lastCharacterIndex !== characterIndex) {
+    setLastCharacterIndex(characterIndex);
+    setStep(0);
+  }
+  const selected = chapter.characters[characterIndex] || chapter.characters[0];
+  const wordExamples = standaloneExamples[selected.glyph] || [];
+  const teacherNote = teacherNotes[`${chapter.no}:${selected.glyph}`];
+  const variantItems = chapters.filter((item) => item.no === '07').flatMap((item) => item.characters.filter((character) => character.variant));
+  const mapChapters = chapters.map((item, index) => ({ chapter: item, index })).filter(({ chapter: item }) => !item.intro && !item.appendix && !item.review);
+  const allVariantsOpen = variantItems.every((item) => openVariants[item.glyph]);
+  const stepAsks = ['어느 부분이 부수일까요?', '부수가 이 글자를 어느 의미 영역으로 데려가나요?', '훈음과 풀이를 추론해 근거를 말해 보세요.', '추론의 근거를 자신의 말로 정리해 보세요.'];
+  const stepButtonLabels = ['① 부수 확인', '② 의미 계열 확인', '③ 풀이 확인', '모두 확인했습니다'];
+
+  return (
+    <section className="review-board">
+      <div className="review-tabs" aria-label="복습 활동 선택">
+        <button onClick={() => setView('infer')} className={view === 'infer' ? 'active' : ''}>추론 루틴</button>
+        <button onClick={() => setView('variants')} className={view === 'variants' ? 'active' : ''}>변형 되돌리기</button>
+        <button onClick={() => setView('map')} className={view === 'map' ? 'active' : ''}>부수 지도</button>
+      </div>
+
+      {view === 'infer' && (
+        <>
+          <section className="inference-panel">
+            <div className="inference-glyph-side">
+              <span className="lesson-tag">INFERENCE · Q{characterIndex + 1} / {chapter.characters.length}</span>
+              {showStrokes ? <div className="inference-stroke"><StrokeAnimator glyph={selected.glyph} /></div> : <div className="inference-glyph">{selected.glyph}</div>}
+              <p className="inference-ask">{stepAsks[step]}</p>
+              <div className="inference-actions">
+                <button className="primary" onClick={() => setStep((value) => Math.min(3, value + 1))} disabled={step >= 3}>{stepButtonLabels[step]}</button>
+                <button onClick={() => setStep(0)} disabled={step === 0}>처음부터 다시 가리기</button>
+                <button onClick={() => setShowStrokes((value) => !value)}>{showStrokes ? '글자로 돌아가기' : '획순 애니메이션 보기'}</button>
+              </div>
+            </div>
+            <ol className="inference-steps">
+              <li className={step >= 1 ? 'open' : ''}>
+                <header><span>①</span><b>부수 찾기</b></header>
+                {step >= 1 ? (
+                  <div className="step-body radical-body">
+                    <b className="step-glyph">{selected.radical}</b>
+                    <div>
+                      <strong>{selected.radicalName}</strong>
+                      <span>부수 위치 · {selected.position}</span>
+                      {selected.radicalBase && <em>기본형으로 되돌리기 → {selected.radicalBase}</em>}
+                    </div>
+                  </div>
+                ) : <p className="step-hidden">글자에서 뜻을 맡는 부분을 먼저 찾아보세요. 변형된 모습이라면 기본형까지 되돌립니다.</p>}
+              </li>
+              <li className={step >= 2 ? 'open' : ''}>
+                <header><span>②</span><b>의미 계열 고르기</b></header>
+                {step >= 2 ? (
+                  <div className="step-body">
+                    <b className="family-chip">{selected.family}</b>
+                    {selected.phonetic && <b className="sound-chip">소리 단서 · {selected.phonetic}</b>}
+                    <p>{selected.phonetic ? '부수가 뜻의 영역을 좁히고, 남은 부분이 소리까지 알려 주는 형성자 계열입니다.' : '소리 단서 없이 뜻과 뜻이 만난 회의 계열입니다. 두 요소가 만드는 장면을 말로 이어 보세요.'}</p>
+                  </div>
+                ) : <p className="step-hidden">정확한 뜻을 몰라도 의미 영역까지는 좁힐 수 있습니다.</p>}
+              </li>
+              <li className={step >= 3 ? 'open' : ''}>
+                <header><span>③</span><b>풀이 확인</b></header>
+                {step >= 3 ? (
+                  <div className="step-body answer-body">
+                    <div className="answer-heading"><strong>{selected.reading}</strong><span>총 {selected.strokes}획 · {selected.kind}</span></div>
+                    <p>{selected.story}</p>
+                    <div className="related-row"><span>관련 글자</span>{selected.related.map((item) => <b key={item}>{item}</b>)}</div>
+                    {wordExamples.length > 0 && <div className="word-example-row"><span>단어 예시</span>{wordExamples.map((item) => <b key={item}>{item}</b>)}</div>}
+                    {selected.image ? (
+                      <div className="answer-ancient">
+                        <img src={selected.image} alt={`${selected.glyph}의 옛 자형`} />
+                        <div>
+                          <b>{selected.ancientLabel || '갑골문(甲骨文)'}</b>
+                          {selected.ancientNote && <p>{selected.ancientNote}</p>}
+                          {selected.source && <a href={selected.source} target="_blank" rel="noreferrer">도판·시대 출처 확인 ↗</a>}
+                        </div>
+                      </div>
+                    ) : selected.ancientNote && <p className="answer-no-plate">{selected.ancientNote}</p>}
+                    {showTeacherNotes && teacherNote && <aside className="character-teacher-note"><b>교사 노트</b><p>{teacherNote}</p></aside>}
+                  </div>
+                ) : <p className="step-hidden">훈음과 총획, 글자의 짜임을 확인하고 추론과 비교합니다.</p>}
+              </li>
+            </ol>
+          </section>
+          <section className="character-strip" aria-label="글자 선택">
+            {chapter.characters.map((item, index) => (
+              <button key={`${item.glyph}-${index}`} onClick={() => onSelectCharacter(index)} className={index === characterIndex ? 'selected' : ''}>
+                <strong>{item.glyph}</strong><span>{index === characterIndex && step >= 3 ? item.reading : '?'}</span>
+              </button>
+            ))}
+          </section>
+        </>
+      )}
+
+      {view === 'variants' && (
+        <section className="variant-drill">
+          <header className="drill-header">
+            <p>7강에서 정리한 변형 부수 {variantItems.length}종입니다. 변형된 모습을 보고 기본형과 이름을 말한 뒤, 카드를 눌러 확인하세요.</p>
+            <button onClick={() => setOpenVariants(allVariantsOpen ? {} : Object.fromEntries(variantItems.map((item) => [item.glyph, true])))}>{allVariantsOpen ? '모두 가리기' : '모두 밝히기'}</button>
+          </header>
+          <div className="drill-grid">
+            {variantItems.map((item) => {
+              const open = !!openVariants[item.glyph];
+              return (
+                <button key={item.glyph} className={open ? 'open' : ''} onClick={() => setOpenVariants((value) => ({ ...value, [item.glyph]: !open }))} aria-pressed={open}>
+                  <span className={`drill-variant ${(item.variant || '').length > 2 ? 'long' : ''}`}>{item.variant}</span>
+                  {open ? <span className="drill-answer"><b>{item.glyph}</b> {item.reading}<i>{item.variantName}</i></span> : <span className="drill-prompt">기본형은?</span>}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {view === 'map' && (
+        <section className="radical-map">
+          <p className="map-lead">214부수는 1~9강에 정확히 한 번씩 배치되어 있습니다. 낯선 글자에서 만난 부수가 어느 강에 있었는지 짚고, 강 이름을 누르면 해당 수업으로 이동합니다.</p>
+          <div className="map-grid">
+            {mapChapters.map(({ chapter: item, index }) => (
+              <article key={item.no}>
+                <header>
+                  <span className="map-no">{item.no}</span>
+                  <div><strong>{item.nav}</strong><small>{item.title}</small></div>
+                  <em>{item.count} {item.countLabel || '새 부수'}</em>
+                </header>
+                <p>{item.range}</p>
+                <button onClick={() => onNavigateChapter(index)}>이 강으로 이동 →</button>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
     </section>
   );
 }
@@ -339,7 +485,7 @@ export default function Home() {
         <header className="topbar">
           {!chapter.appendix && <div className="mode-tabs" aria-label="화면 모드">
             {chapter.intro ? <button className="active">도입 슬라이드</button> : <>
-              <button onClick={() => setMode('explore')} className={mode === 'explore' ? 'active' : ''}>글자 탐구</button>
+              <button onClick={() => setMode('explore')} className={mode === 'explore' ? 'active' : ''}>{chapter.review ? '복습 활동' : '글자 탐구'}</button>
               <button onClick={() => setMode('plan')} className={mode === 'plan' ? 'active' : ''}>수업 설계</button>
               <button onClick={() => { setMode('quiz'); setRevealed(false); }} className={mode === 'quiz' ? 'active' : ''}>퀴즈</button>
             </>}
@@ -362,7 +508,9 @@ export default function Home() {
 
         {chapter.appendix && <SajaSeohakBoard readingMode={sajaseohakMode} passageIndex={sajaseohakPassageIndex} onPassageChange={setSajaseohakPassageIndex} onReadingModeChange={setSajaseohakMode} />}
 
-        {mode === 'explore' && !chapter.intro && !chapter.appendix && (
+        {mode === 'explore' && chapter.review && <ReviewBoard chapter={chapter} characterIndex={characterIndex} onSelectCharacter={setCharacterIndex} showTeacherNotes={showTeacherNotes} onNavigateChapter={selectChapter} />}
+
+        {mode === 'explore' && !chapter.intro && !chapter.appendix && !chapter.review && (
           <>
             <section className="hero-panel">
               <div className="visual-panel">
